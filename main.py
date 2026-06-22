@@ -1,5 +1,6 @@
 import sympy as sp
 from Vector import Vector
+from linear_combination import linear_combination
 
 def test_addition():
     print('Test addition (v+v)')
@@ -37,14 +38,22 @@ def test_mult_by_scalar():
 
     print()
 
+def test_linear_combination():
+    print('Test linear combination')
+    v1 = Vector([1, 2, 3])
+    v2 = Vector([0, 10, -100])
+
+    vectors = [v1, v2]
+    scalars = [10, -2]
+    r = linear_combination(vectors, scalars)
+    print(r)
+
 
 def main():
     test_addition()
     test_substract()
     test_mult_by_scalar()
-
-
-
+    test_linear_combination()
 
 
 if __name__ == "__main__":

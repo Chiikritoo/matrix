@@ -24,3 +24,6 @@ class Vector:
 		if len(self.n) != len(other.n):
 			raise ValueError(f"Vectors have not the same length ({self.n} - {other.n})")
 		self.n = [n1 - n2 for n1, n2 in zip(self.n, other.n)]
+
+	def scl(self, scalar: int) -> None:
+		self.n = [scalar * number for number in self.n]

@@ -1,6 +1,14 @@
-import Vector
+from typing import Sequence, TypeAlias
 
-def linear_combination(vectors: list, coefs: list) -> Vector:
+from common.Vector import Vector
+
+Number: TypeAlias = int | float
+
+
+def linear_combination(
+        vectors: Sequence[Vector],
+        coefs: Sequence[Number],
+) -> Vector:
     if len(vectors) != len(coefs):
         raise ValueError("There must be as many vectors as coefs")
 

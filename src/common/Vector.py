@@ -13,6 +13,8 @@ class VectorSizeError(ValueError):
 
 class Vector(Generic[K]):
     def __init__(self, numbers: list[K]) -> None:
+        if not numbers:
+            raise ValueError("Vector cannot be empty")
         self._n: list[K] = numbers
 
     def __str__(self) -> str:

@@ -1,4 +1,4 @@
-from common.Vector import Vector
+from common import Vector
 from ex01.linear_combination import linear_combination
 
 

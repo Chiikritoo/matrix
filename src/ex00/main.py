@@ -1,4 +1,4 @@
-from common.Vector import Vector
+from common import Vector
 
 
 def test_addition():

@@ -1,6 +1,6 @@
 from typing import Sequence, TypeAlias
 
-from common.Vector import Vector
+from common import Vector
 
 Number: TypeAlias = int | float
 

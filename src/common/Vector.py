@@ -67,3 +67,25 @@ class Vector(Generic[K]):
 
     def scl(self, scalar: K) -> None:
         self.n = [scalar * component for component in self.n]
+
+    def dot(self, v: Vector[K]) -> K:
+        scalar: K = self.n[0] * 0
+        for n1, n2 in zip(self.n, v.n):
+            scalar += n1 * n2
+        return scalar
+
+    def norm_1(self) -> float:
+        norm = 0.0
+        for number in self.n:
+            norm += abs(number)
+        return norm
+
+    def norm(self) -> float:
+        norm = 0.0
+        for number in self.n:
+            norm += abs(number) ** 2
+        return norm ** 0.5
+
+    def norm_inf(self) -> float:
+        numbers = [abs(number) for number in self.n]
+        return max(numbers)

@@ -1,5 +1,7 @@
 from __future__ import annotations
+from math import fma
 from typing import TypeVar, Generic
+from xml.sax.handler import property_dom_node
 
 K = TypeVar("K", int, float)
 
@@ -16,6 +18,7 @@ class Vector(Generic[K]):
         if not numbers:
             raise ValueError("Vector cannot be empty")
         self._n: list[K] = numbers
+        self._length = len(self._n)
 
     def __str__(self) -> str:
         strs = [str(x) for x in self._n]
@@ -46,6 +49,10 @@ class Vector(Generic[K]):
         return str(self._n)
 
     @property
+    def length(self) -> int:
+        return self._length
+
+    @property
     def n(self) -> list[K]:
         return self._n
 
@@ -54,13 +61,13 @@ class Vector(Generic[K]):
         self._n = numbers
 
     def add(self, other: Vector) -> None:
-        if len(self.n) != len(other.n):
+        if self._length != other._length:
             raise VectorSizeError(self, other)
 
         self.n = [n1 + n2 for n1, n2 in zip(self.n, other.n)]
 
     def sub(self, other: Vector) -> None:
-        if len(self.n) != len(other.n):
+        if self._length != other._length:
             raise VectorSizeError(self, other)
 
         self.n = [n1 - n2 for n1, n2 in zip(self.n, other.n)]
@@ -68,10 +75,18 @@ class Vector(Generic[K]):
     def scl(self, scalar: K) -> None:
         self.n = [scalar * component for component in self.n]
 
+    # def dot(self, v: Vector[K]) -> float:
+    #     scalar = 0.0
+    #     for n1, n2 in zip(self.n, v.n):
+    #         scalar = fma(n1, n2, scalar)
+    #     return scalar
+
     def dot(self, v: Vector[K]) -> K:
-        scalar: K = self.n[0] * 0
-        for n1, n2 in zip(self.n, v.n):
+        scalar: K = self.n[0] * v.n[0]
+
+        for n1, n2 in zip(self.n[1:], v.n[1:], strict=True):
             scalar += n1 * n2
+
         return scalar
 
     def norm_1(self) -> float:
@@ -83,7 +98,8 @@ class Vector(Generic[K]):
     def norm(self) -> float:
         norm = 0.0
         for number in self.n:
-            norm += abs(number) ** 2
+            value = abs(number)
+            norm = fma(value, value, norm)
         return norm ** 0.5
 
     def norm_inf(self) -> float:

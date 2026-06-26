@@ -1,3 +1,4 @@
+from math import fma
 from typing import Sequence, TypeAlias
 
 from common import Vector
@@ -12,12 +13,16 @@ def linear_combination(
     if len(vectors) != len(coefs):
         raise ValueError("There must be as many vectors as coefs")
 
-    for vector, scalar in zip(vectors, coefs):
-        vector.scl(scalar)
+    if not vectors:
+        raise ValueError("Vectors cannot be empty")
 
-    result = vectors[0]
+    size = len(vectors[0].n)
+    if any(len(vector.n) != size for vector in vectors):
+        raise ValueError("Vectors must have the same size")
 
-    for vector in vectors[1:]:
-        result.add(vector)
+    result = [0.0] * size
+    for vector, coef in zip(vectors, coefs, strict=True):
+        for i, component in enumerate(vector.n):
+            result[i] = fma(coef, component, result[i])
 
-    return result
+    return Vector(result)
